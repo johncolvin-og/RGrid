@@ -1,0 +1,193 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:u="clr-namespace:RGrid.WPF"
+  xmlns:c="clr-namespace:RGrid.Controls"
+  xmlns:cf="clr-namespace:RGrid.Controls.Filter"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+>
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/View/DoubleMinMaxFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/IntMinMaxFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/UIntMinMaxFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/UShortMinMaxFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/ULongMinMaxFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/TimeFilterControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Columns/Filter/view/FilterContentControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/WPF/Controls/ListBoxEx.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <sys:Double x:Key="MinMaxWidth">160</sys:Double>
+  <DataTemplate x:Key="DoubleMinMaxTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <cf:DoubleMinMaxFilterControl
+        x:Name="Filter"
+        Minimum="{Binding minimum}"
+        Maximum="{Binding maximum}"
+        RequestBindingUpdateSource="{Binding}"
+        Width="{Binding Source={StaticResource MinMaxWidth}}"
+        u:Behavior.AutoFocusTargetProvider="{u:AutoFocusTarget TextBox, FocusKeyboard=True, ReleaseKeyboard=True}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="IntMinMaxTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <cf:IntMinMaxFilterControl
+        x:Name="Filter"
+        Minimum="{Binding minimum}"
+        Maximum="{Binding maximum}"
+        RequestBindingUpdateSource="{Binding}"
+        Width="{Binding Source={StaticResource MinMaxWidth}}"
+        u:Behavior.AutoFocusTargetProvider="{u:AutoFocusTarget TextBox, FocusKeyboard=True, ReleaseKeyboard=True}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="UIntMinMaxTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <!--<cf:UIntMinMaxFilterControl
+        x:Name="Filter"
+        Minimum="{Binding minimum}"
+        Maximum="{Binding maximum}"
+        RequestBindingUpdateSource="{Binding}"
+        Width="{Binding Source={StaticResource MinMaxWidth}}"
+        u:Behavior.AutoFocusTargetProvider="{u:AutoFocusTarget TextBox, FocusKeyboard=True, ReleaseKeyboard=True}"
+      />-->
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="UShortMinMaxTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <cf:UShortMinMaxFilterControl
+        x:Name="Filter"
+        Minimum="{Binding minimum}"
+        Maximum="{Binding maximum}"
+        RequestBindingUpdateSource="{Binding}"
+        Width="{Binding Source={StaticResource MinMaxWidth}}"
+        u:Behavior.AutoFocusTargetProvider="{u:AutoFocusTarget TextBox, FocusKeyboard=True, ReleaseKeyboard=True}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="ULongMinMaxTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <cf:ULongMinMaxFilterControl
+        x:Name="Filter"
+        Minimum="{Binding minimum}"
+        Maximum="{Binding maximum}"
+        RequestBindingUpdateSource="{Binding}"
+        Width="{Binding Source={StaticResource MinMaxWidth}}"
+        u:Behavior.AutoFocusTargetProvider="{u:AutoFocusTarget TextBox, FocusKeyboard=True, ReleaseKeyboard=True}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="TimeFilterTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <c:TimeFilterControl
+        x:Name="Filter"
+        Mode="{Binding mode}"
+        Begin="{Binding begin}"
+        End="{Binding end}"
+      >
+        <u:Behavior.BindingUpdateGroups>
+          <u:BindingUpdateGroupCollection>
+            <u:BindingUpdateGroup Source="{Binding DataContext, Source={u:DirectReference Filter}}" Target="{Binding Source={u:DirectReference Filter}}">
+              <u:PropertyTuple PropertyName="Mode" Type="{x:Type c:TimeFilterControl}"/>
+              <u:PropertyTuple PropertyName="Begin" Type="{x:Type c:TimeFilterControl}"/>
+              <u:PropertyTuple PropertyName="End" Type="{x:Type c:TimeFilterControl}"/>
+            </u:BindingUpdateGroup>
+          </u:BindingUpdateGroupCollection>
+        </u:Behavior.BindingUpdateGroups> 
+      </c:TimeFilterControl>
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="DiscreteValuesTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <c:ListBoxEx
+        ItemsSource="{Binding items}"
+        Selection="{Binding selected_items}"
+        SelectionMode="Multiple"
+        ItemContainerStyle="{StaticResource ListBoxItemCheckBoxStyle}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="EnumValuesTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <c:ListBoxEx
+        ItemsSource="{Binding items}"
+        Selection="{Binding selected_items}"
+        SelectionMode="Multiple"
+        ItemContainerStyle="{StaticResource ListBoxItemCheckBoxStyle}"
+        ItemTemplate="{StaticResource EnumDescriptionTemplate}"
+      />
+    </cf:FilterContentControl>
+  </DataTemplate>
+  <DataTemplate x:Key="RegexTemplate">
+    <cf:FilterContentControl
+      ApplyCommandParameter="{Binding}"
+      ApplyCommand="{x:Static c:DataGridFilterProperties.CommitCommand}"
+      ClearCommandParameter="{Binding}"
+      ClearCommand="{x:Static c:DataGridFilterProperties.ClearCommand}"
+    >
+      <Grid Width="160">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Search"/>
+        <TextBox
+          x:Name="Filter"
+          Grid.Column="1" Margin="5,0,0,0"
+          HorizontalAlignment="Stretch"
+          Text="{Binding text}"
+          u:TextBoxBehavior.FocusOnLoaded="True"
+          u:TextBoxBehavior.CommitOnEnter="True"
+        >
+          <u:Behavior.BindingUpdateGroups>
+            <u:BindingUpdateGroupCollection>
+              <u:BindingUpdateGroup Source="{Binding DataContext, Source={u:DirectReference Filter}}" Target="{Binding Source={u:DirectReference Filter}}">
+                <u:PropertyTuple PropertyName="Text" Type="{x:Type TextBox}"/>
+              </u:BindingUpdateGroup>
+            </u:BindingUpdateGroupCollection>
+          </u:Behavior.BindingUpdateGroups>
+        </TextBox>
+      </Grid>
+    </cf:FilterContentControl>
+  </DataTemplate>
+</ResourceDictionary>

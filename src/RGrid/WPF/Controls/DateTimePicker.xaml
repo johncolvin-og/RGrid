@@ -1,0 +1,118 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="clr-namespace:RGrid.WPF"
+                    xmlns:c="clr-namespace:RGrid.Controls"
+                    xmlns:cv="clr-namespace:RGrid.WPF.Converters"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/RGrid;component/Themes/Colors.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <cv:ValueMap x:Key="NullOrEmptyVisibilityConverter" Default="{u:Visibility Hidden}">
+    <cv:KeyValue Key="{x:Static sys:String.Empty}" Value="{u:Visibility Visible}"/>
+    <cv:KeyValue Key="{x:Null}" Value="{u:Visibility Visible}"/>
+  </cv:ValueMap>
+ 
+  <ControlTemplate x:Key="HoverButtonOverlayTemplate2" TargetType="c:TickUpDown">
+    <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <ContentPresenter Grid.RowSpan="2" VerticalAlignment="Center" Margin="{TemplateBinding Padding}" />
+      <RepeatButton
+        x:Name="tick_up"
+        Grid.Column="1"
+        HorizontalAlignment="Right"
+        Command="{TemplateBinding TickUpCommand}"
+        CommandParameter="{TemplateBinding TickUpParameter}"
+        Visibility="Collapsed"
+        Focusable="False"
+      >
+        <Path
+          Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" 
+          Fill="#FF606060"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          RenderTransformOrigin="0.5,0.5"
+        >
+          <Path.RenderTransform>
+            <RotateTransform Angle="180" />
+          </Path.RenderTransform>
+        </Path>
+      </RepeatButton>
+      <RepeatButton
+        x:Name="tick_down"
+        Grid.Row="1"
+        Grid.Column="1"
+        HorizontalAlignment="Right"
+        Command="{TemplateBinding TickDownCommand}"
+        CommandParameter="{TemplateBinding TickDownParameter}"
+        Visibility="Collapsed"
+        Focusable="False"
+      >
+        <Path
+          Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" 
+          Fill="#FF606060"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+        />
+      </RepeatButton>
+    </Grid>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="tick_up" Property="Visibility" Value="Visible"/>
+        <Setter TargetName="tick_down" Property="Visibility" Value="Visible"/>
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+  <Style x:Key="TextPromptStyle" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{x:Static text_prompt_foreground_brush, MemberType={u:Nested u:BTSColors.UI}}"/>
+    <Setter Property="Margin" Value="4,0,0,0"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+  </Style>
+  <Style TargetType="c:DateTimePicker">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type c:DateTimePicker}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="70"/>
+              <ColumnDefinition Width="35"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="27"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="38"/>
+            </Grid.ColumnDefinitions>
+            <c:TickUpDown x:Name="PART_time_tick" HorizontalAlignment="Stretch" EnableArrowKeyTick="False" Template="{StaticResource HoverButtonOverlayTemplate2}">
+              <TextBox x:Name="PART_time_text" Height="20" u:TextBoxBehavior.EnableArrowKeyTraverse="True">
+                <TextBox.InputBindings>
+                  <KeyBinding Key="Up" Command="{x:Static c:DateTimePicker.TickTimeComponentCommand}" CommandParameter="{u:Int 1}"/>
+                  <KeyBinding Key="Down" Command="{x:Static c:DateTimePicker.TickTimeComponentCommand}" CommandParameter="{u:Int -1}"/>
+                  <u:CustomInputBinding Gesture="{x:Static u:InputGestures.LeftTripleClick}" Command="{x:Static u:TextBoxBehavior.SelectAllCommand}"/>
+                </TextBox.InputBindings>
+              </TextBox>
+            </c:TickUpDown>
+            <c:TickUpDown x:Name="PART_month_tick" Margin="2,0,0,0" Grid.Column="1" Template="{StaticResource HoverButtonOverlayTemplate2}">
+              <TextBox x:Name="PART_month_text" Height="20" u:TextBoxBehavior.EnableArrowKeyTraverse="True"/>
+            </c:TickUpDown>
+            <TextBlock Grid.Column="2" Margin="2,0">/</TextBlock>
+            <c:TickUpDown x:Name="PART_day_tick" Grid.Column="3" Template="{StaticResource HoverButtonOverlayTemplate2}">
+              <TextBox x:Name="PART_day_text" Height="20" u:TextBoxBehavior.EnableArrowKeyTraverse="True"/>
+            </c:TickUpDown>
+            <TextBlock Grid.Column="4" Margin="2,0">/</TextBlock>
+            <c:TickUpDown x:Name="PART_year_tick" Grid.Column="5" Template="{StaticResource HoverButtonOverlayTemplate2}">
+              <TextBox x:Name="PART_year_text" Height="20" u:TextBoxBehavior.EnableArrowKeyTraverse="True"/>
+            </c:TickUpDown>
+            <TextBlock Grid.Column="0" Text="hh:mm tt" Style="{StaticResource TextPromptStyle}" Visibility="{Binding Text, ElementName=PART_time_text, Converter={StaticResource NullOrEmptyVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1" Text="mm" Margin="6,0,0,0" Style="{StaticResource TextPromptStyle}" Visibility="{Binding Text, ElementName=PART_month_text, Converter={StaticResource NullOrEmptyVisibilityConverter}}"/>
+            <TextBlock Grid.Column="3" Text="dd" Style="{StaticResource TextPromptStyle}" Visibility="{Binding Text, ElementName=PART_day_text, Converter={StaticResource NullOrEmptyVisibilityConverter}}"/>
+            <TextBlock Grid.Column="5" Text="yyyy" Style="{StaticResource TextPromptStyle}" Visibility="{Binding Text, ElementName=PART_year_text, Converter={StaticResource NullOrEmptyVisibilityConverter}}"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

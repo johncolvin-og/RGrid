@@ -1,0 +1,12 @@
+<Project>
+	<PropertyGroup>
+		<Root>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)))\..</Root>
+		<BuildPath>$(Root)\build</BuildPath>
+		<BaseOutputPath>$(BuildPath)\$(Configuration)</BaseOutputPath>
+		<OutputPath>$(BaseOutputPath)\bin</OutputPath>
+		<BaseIntermediateOutputPath>$(BaseOutputPath)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+		<IntermediateOutputPath>$(BaseOutputPath)\obj\$(MSBuildProjectName)</IntermediateOutputPath>
+		<GenDir>$(BaseOutputPath)\gen\$(MSBuildProjectName)</GenDir>
+		<PropFoo>Fighters</PropFoo>
+	</PropertyGroup>
+</Project>

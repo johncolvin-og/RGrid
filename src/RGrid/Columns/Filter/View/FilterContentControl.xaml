@@ -1,0 +1,42 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:cf="clr-namespace:RGrid.Controls.Filter"
+>
+  <Style TargetType="cf:FilterContentControl">
+    <Setter Property="Padding" Value="8,6,8,8"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="cf:FilterContentControl">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ContentPresenter Margin="{TemplateBinding Padding}"/>
+            <Border Grid.Row="1" Background="LightGray" HorizontalAlignment="Stretch" Padding="10,8">
+              <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                  Content="Apply"
+                  CommandParameter="{TemplateBinding ApplyCommandParameter}"
+                  Command="{TemplateBinding ApplyCommand}"
+                  IsDefault="True"
+                  Focusable="False"
+                  Style="{DynamicResource CommonButton}"
+                />
+                <Button
+                  Margin="8,0,0,0"
+                  Content="Clear"
+                  CommandParameter="{TemplateBinding ClearCommandParameter}"
+                  Command="{TemplateBinding ClearCommand}"
+                  Focusable="False"
+                  Style="{DynamicResource CommonButton}"
+                />
+              </StackPanel>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

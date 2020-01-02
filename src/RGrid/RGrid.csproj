@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWpf>true</UseWpf>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Collections.Sync" Version="1.0.0" />
+    <PackageReference Include="Disposable.Extensions" Version="1.0.0" />
+    <PackageReference Include="EqualityComparer.Extensions" Version="1.0.0" />
+    <PackageReference Include="Monitor.Render.Utilities" Version="1.0.0" />
+    <PackageReference Include="protobuf-net" Version="2.4.4" />
+    <PackageReference Include="System.Reactive" Version="4.3.2" />
+    <PackageReference Include="Text.Render.Utilities" Version="1.0.0" />
+  </ItemGroup>
+</Project>
