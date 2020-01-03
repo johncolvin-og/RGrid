@@ -5,13 +5,13 @@ using System.Windows.Input;
 namespace RGrid.Filters {
    public interface IDataGridColumnFilter : INotifyDataErrorInfo {
       string prop_name { get; }
-      bool? active { get; }
-      bool open { get; }
+      bool? IsActive { get; }
+      bool IsOpen { get; }
       ICommand Apply { get; }
       ICommand Clear { get; }
       ICommand Cancel { get; }
-      bool filter(object row);
-      event Action filter_changed;
+      bool Filter(object row);
+      event Action FilterChanged;
    }
 
    public interface IDataGridColumnFilter<in TRow> : IDataGridColumnFilter {

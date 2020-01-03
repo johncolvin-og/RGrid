@@ -334,8 +334,8 @@ namespace RGrid {
          if (column is IFilterableColumn fc) {
             DataGridFilterProperties.SetFilter(column, fc.filter);
             DataGridFilterProperties.SetFilterTemplate(column, FindResource(fc.filter_template) as DataTemplate);
-            BindingOperations.SetBinding(column, DataGridFilterProperties.FilterActiveProperty, new Binding(nameof(IDataGridColumnFilter.active)) { Source = fc.filter });
-            BindingOperations.SetBinding(column, DataGridFilterProperties.FilterOpenProperty, new Binding(nameof(IDataGridColumnFilter.open)) { Source = fc.filter });
+            BindingOperations.SetBinding(column, DataGridFilterProperties.FilterActiveProperty, new Binding(nameof(IDataGridColumnFilter.IsActive)) { Source = fc.filter });
+            BindingOperations.SetBinding(column, DataGridFilterProperties.FilterOpenProperty, new Binding(nameof(IDataGridColumnFilter.IsOpen)) { Source = fc.filter });
          }
       }
 

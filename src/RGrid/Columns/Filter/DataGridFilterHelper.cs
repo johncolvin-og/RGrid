@@ -40,18 +40,18 @@ namespace RGrid.Filters {
 
       static IDisposable _hook_filters<TRow>(Action set_filter, params IDataGridColumnFilter<TRow>[] filters) {
          foreach (var f in filters)
-            f.filter_changed += set_filter;
+            f.FilterChanged += set_filter;
          set_filter();
          return DisposableFactory.Create(() => {
             foreach (var f in filters) {
-               f.filter_changed -= set_filter;
+               f.FilterChanged -= set_filter;
                (f as IDisposable)?.Dispose();
             }
          });
       }
 
       static List<IDataGridColumnFilter<TRow>> _get_active_filters<TRow>(IDataGridColumnFilter<TRow>[] filters) =>
-         filters.Where(f => f.active.HasValue && f.active.Value).ToList();
+         filters.Where(f => f.IsActive.HasValue && f.IsActive.Value).ToList();
    }
 
    public static class DataGridFilterKnownTemplates {

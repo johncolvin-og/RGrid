@@ -39,8 +39,11 @@ namespace RGrid.WPF {
       void IRaiseNotifyPropertyChanged.raise_notify_property_changed(string prop) =>
          RaisePropertyChanged(prop);
 
-      protected bool Set<T>(ref T dest, T value, [CallerMemberName]string name = "") where T : IEquatable<T> {
-         if (!dest.Equals(value)) {
+      protected bool Set<T>(ref T dest, T value, [CallerMemberName]string name = "") =>
+         Set(ref dest, value, EqualityComparer<T>.Default, name);
+
+      protected bool Set<T>(ref T dest, T value, IEqualityComparer<T> comparer, [CallerMemberName]string name = "") {
+         if (!comparer.Equals(dest, value)) {
             dest = value;
             RaisePropertyChanged(name);
             return true;

@@ -122,14 +122,14 @@ namespace RGrid {
       public static IObservable<Func<T, bool>> SubscribeFilter<T>(IReadOnlyObservableCollection<ColumnBase> columns) {
          return Observable.Create<Func<T, bool>>(o => {
             var filter_map = columns.OfType<IFilterableColumn<T>>()
-               .Where(fc => fc.filter.active ?? false)
+               .Where(fc => fc.filter.IsActive ?? false)
                .ToDictionary(fc => fc.ID);
             return ObservableAutoWrapper.ConnectItemHooks(columns, c => {
                if (c is IFilterableColumn<T> fc) {
-                  fc.filter.filter_changed += on_filter_changed;
-                  return DisposableFactory.Create(() => fc.filter.filter_changed -= on_filter_changed);
+                  fc.filter.FilterChanged += on_filter_changed;
+                  return DisposableFactory.Create(() => fc.filter.FilterChanged -= on_filter_changed);
                   void on_filter_changed() {
-                     if (fc.filter.active ?? false) {
+                     if (fc.filter.IsActive ?? false) {
                         filter_map[c.ID] = fc;
                      } else {
                         filter_map.Remove(c.ID);

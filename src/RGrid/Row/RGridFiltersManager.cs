@@ -31,13 +31,13 @@ namespace RGrid {
             _filters_state_factory = filters_state_factory;
             _raise_filters_changed = new DeferrableActionWrapper(() => active_filters_changed?.Invoke());
             ObservableAutoWrapper.ConnectItemHooks(_columns.AsCollection(), f => {
-               f.filter.filter_changed += _raise_filters_changed.execute;
-               return DisposableFactory.Create(() => f.filter.filter_changed -= _raise_filters_changed.execute);
+               f.filter.FilterChanged += _raise_filters_changed.execute;
+               return DisposableFactory.Create(() => f.filter.FilterChanged -= _raise_filters_changed.execute);
             });
          }
 
          public event Action active_filters_changed;
-         public IEnumerable<(TColKey col, IDataGridColumnFilter<T> filter)> active_col_filters => _columns.AsCollection().Where(f => f.filter.active ?? false).Select(f => (f.key, f.filter));
+         public IEnumerable<(TColKey col, IDataGridColumnFilter<T> filter)> active_col_filters => _columns.AsCollection().Where(f => f.filter.IsActive ?? false).Select(f => (f.key, f.filter));
 
          public void add_column(DataGridColumnData<T, TColKey, TFiltersState> col) {
             _columns[col.key] = col;

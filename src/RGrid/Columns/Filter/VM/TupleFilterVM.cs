@@ -23,36 +23,36 @@ namespace RGrid.Filters {
          _get_filter1_state = get_filter1_state;
          _get_filter2_state = get_filter2_state;
          _get_state = get_state;
-         _filter1.filter_changed += () => filter_changed?.Invoke();
-         _filter2.filter_changed += () => filter_changed?.Invoke();
+         _filter1.FilterChanged += () => FilterChanged?.Invoke();
+         _filter2.FilterChanged += () => FilterChanged?.Invoke();
       }
 
-      public event Action filter_changed;
+      public event Action FilterChanged;
       public event Action RequestUpdate;
 
       public FilterVMBase<TRow, TValue1, TState1> filter1 => _filter1;
       public FilterVMBase<TRow, TValue2, TState2> filter2 => _filter2;
       public string prop_name { get; }
-      public bool? active {
+      public bool? IsActive {
          get {
-            bool? f1_active = _filter1.active;
+            bool? f1_active = _filter1.IsActive;
             if (f1_active.HasValue) {
-               bool? f2_active = _filter2.active;
+               bool? f2_active = _filter2.IsActive;
                if (f2_active.HasValue)
                   return f1_active.Value && f2_active.Value;
             }
             return null;
          }
       }
-      public bool open { get; set; }
+      public bool IsOpen { get; set; }
       public ICommand Apply { get; }
       public ICommand Clear { get; }
       public ICommand Cancel { get; }
 
       public bool Filter(TRow row) {
-         if (!active.HasValue || !active.Value)
+         if (!IsActive.HasValue || !IsActive.Value)
             return true;
-         return (!_filter1.active.Value || _filter1.Filter(row)) && (!_filter2.active.Value || _filter2.Filter(row));
+         return (!_filter1.IsActive.Value || _filter1.Filter(row)) && (!_filter2.IsActive.Value || _filter2.Filter(row));
       }
 
       public TCompoundState GetState() =>
@@ -67,7 +67,7 @@ namespace RGrid.Filters {
          RequestUpdate?.Invoke();
 
 
-      bool IDataGridColumnFilter.filter(object row) =>
+      bool IDataGridColumnFilter.Filter(object row) =>
          Filter(ConvertUtils.try_convert<TRow>(row));
    }
 }

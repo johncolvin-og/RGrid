@@ -1,4 +1,5 @@
-﻿using Disposable.Extensions.Utilities;
+﻿using Collections.Sync;
+using Disposable.Extensions.Utilities;
 using RGrid.Utility;
 using RGrid.WPF;
 using System;
@@ -10,6 +11,66 @@ using System.Linq;
 using System.Reactive.Linq;
 
 namespace RGrid.Filters {
+   public class SelectableItemVM<T> : ViewModelBase {
+      bool _is_selected;
+
+      public SelectableItemVM(T value) =>
+         Value = value;
+
+      public bool IsSelected {
+         get => _is_selected;
+         set => Set(ref _is_selected, value);
+      }
+
+      public T Value { get; }
+   }
+
+   class MultiSelectModel<T> {
+      readonly IComparer<T> _comparer;
+      readonly HashSet<T> _desired_selected_items;
+      readonly ObservableCollection<T> _items, _selected_items;
+
+      public IStrongReadOnlyObservableCollection<SelectableItemVM<T>> Items { get; }
+      public IStrongReadOnlyObservableCollection<T> SelectedItems { get; }
+
+      public void SetSelection(IEnumerable<T> items) {
+
+      }
+   }
+
+   public class DiscreteValuesFilterVM<TRow, TItemKey, TItem, TState> : FilterVM<TRow, TItem, TState> {
+      readonly Func<TRow, TItem> _get_row_val;
+      readonly Func<TState, IObservable<(IEnumerable<TItem> added, IEnumerable<TItem> removed)>> _subscribe_incremental;
+      readonly Func<IEnumerable<TItem>, TState> _get_state;
+      readonly ObservableCollection<SelectableItemVM<TItem>> _items = new ObservableCollection<SelectableItemVM<TItem>>();
+      readonly IComparer<TItem> _comparer;
+      readonly HashSet<TItem> _selected_items;
+
+      public DiscreteValuesFilterVM(
+         Func<TRow, TItem> get_row_val,
+         Func<TState, IObservable<(IEnumerable<TItem> added, IEnumerable<TItem> removed)>> subscribe_incremental,
+         Func<IEnumerable<TItem>, TState> get_state,
+         IComparer<TItem> comparer) {
+         //
+         _get_row_val = get_row_val ?? throw new ArgumentNullException(nameof(get_row_val));
+         _subscribe_incremental = subscribe_incremental ?? throw new ArgumentNullException(nameof(subscribe_incremental));
+         _get_state = get_state ?? throw new ArgumentNullException(nameof(get_state));
+         _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+         Items = ObservableCollectionFactory.CreateStrongReadOnly(
+            ObservableAutoWrapper.CreateReadOnly(_items));
+      }
+
+      public IStrongReadOnlyObservableCollection<SelectableItemVM<TItem>> Items { get; }
+
+      public override TState GetState() =>
+         _get_state(_selected_items);
+
+      public void UpdateItems(IEnumerable<TItem> add, IEnumerable<TItem> remove) {
+      }
+
+      protected override IObservable<Func<TRow, bool>> CreatePredicateSource(TState state) => throw new NotImplementedException();
+   }
+
    public static class DiscreteValuesFilterVM {
       #region Create
       public static IDataGridColumnPersistentFilter<TRow, TValue[]> Create<TRow, TValue>(
